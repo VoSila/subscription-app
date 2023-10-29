@@ -1,0 +1,51 @@
+version: "3.7"
+services:
+  php:
+    build:
+      args:
+        user: developer
+        uid: 1000
+      context: ./php
+      dockerfile: dockerfile
+    container_name: ${PHP_CONTAINER}
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - "../server:/var/www"
+    networks:
+      - subscription-app
+
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: ${MYSQL_CONTAINER}
+    restart: unless-stopped
+    env_file:
+      - ".env"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      SERVICE_TAGS: ${SERVICE_TAGS}
+      SERVICE_NAME: ${SERVICE_NAME}
+    volumes:
+      - "./mysql:/docker-entrypoint-initdb.d"
+    networks:
+      - subscription-app
+
+  nginx:
+    image: nginx:alpine
+    container_name: ${NGINX_CONTAINER}
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+      - "../server:/var/www"
+    networks:
+      - subscription-app
+
+networks:
+  subscription-app:
+    driver: bridge

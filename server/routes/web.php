@@ -35,17 +35,21 @@ Route::middleware('auth')->group(function () {
         PlanController::class, 'show'
     ])->name("plans.show");
 
-    Route::post('subscription', [
-        PlanController::class, 'subscription'
-    ])->name("subscription.create");
+    Route::group(['prefix' => 'subscription'], function () {
 
-    Route::get('cancel_subscription/{plan}', [
-        PlanController::class, 'cancelSubscription'
-    ])->name("subscription.cancel");
+        Route::post('/', [
+            PlanController::class, 'subscription'
+        ])->name("subscription.create");
 
-    Route::get('resume_subscription/{plan}', [
-        PlanController::class, 'resumeSubscription'
-    ])->name("subscription.resume");
+        Route::get('/cancel/{plan}', [
+            PlanController::class, 'cancelSubscription'
+        ])->name("subscription.cancel");
+
+        Route::get('/resume/{plan}', [
+            PlanController::class, 'resumeSubscription'
+        ])->name("subscription.resume");
+    });
+
 
     Route::get('/profile', [
         UserController::class, 'profile'

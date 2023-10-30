@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Middleware;
 
+use Closure;
 use App\Repository\WebhookLogRepository;
-use Illuminate\Http\Request;
-use Laravel\Cashier\Http\Controllers\WebhookController;
 
-class WebhookLogController extends WebhookController
+class StripeWebhookLogs
 {
 
     /**
@@ -17,23 +16,25 @@ class WebhookLogController extends WebhookController
     /**
      * @param WebhookLogRepository $webhookLogRepository
      */
+
     public function __construct(WebhookLogRepository $webhookLogRepository)
     {
-        parent::__construct();
         $this->webhookLogRepository = $webhookLogRepository;
     }
 
     /**
-     * @param Request $request
-     * @return void
+     * @param $request
+     * @param Closure $next
+     * @return mixed
      */
-    public function handleLogWebhook(Request $request): void
+    public function handle($request, Closure $next)
     {
-        $payload = json_decode($request->getContent(), true);
-        $type = $payload['type'];
 
+        $payload = json_decode($request->getContent(), true);
+
+        $type = $payload['type'];
         $this->webhookLogRepository->create($type, $payload);
 
-       $this->handleWebhook($request);
+        return $next($request);
     }
 }

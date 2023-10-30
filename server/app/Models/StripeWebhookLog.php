@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WebhookLog extends Model
+class StripeWebhookLog extends Model
 {
     use HasFactory;
 
@@ -28,9 +28,9 @@ class WebhookLog extends Model
      *
      * @param int $id
      *
-     * @return WebhookLog
+     * @return StripeWebhookLog
      */
-    public function setId(int $id): WebhookLog
+    public function setId(int $id): StripeWebhookLog
     {
         $this->setAttribute(self::ID, $id);
         return $this;
@@ -50,9 +50,9 @@ class WebhookLog extends Model
      * Set type
      *
      * @param string $type
-     * @return WebhookLog
+     * @return StripeWebhookLog
      */
-    public function setType(string $type): WebhookLog
+    public function setType(string $type): StripeWebhookLog
     {
         $this->setAttribute(self::TYPE, $type);
         return $this;
@@ -72,9 +72,9 @@ class WebhookLog extends Model
      * Set payload
      *
      * @param string $payload
-     * @return WebhookLog
+     * @return StripeWebhookLog
      */
-    public function setPayload(string $payload): WebhookLog
+    public function setPayload(string $payload): StripeWebhookLog
     {
         $this->setAttribute(self::PAYLOAD, $payload);
         return $this;

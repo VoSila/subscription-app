@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\PlanController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\WebhookLogController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,41 +20,38 @@ Route::get('/', [
     UserController::class, 'index'
 ])->name('index');
 
-Route::any('/webhook/stripe', [
-    WebhookLogController::class, 'handleLogWebhook'
-])->name('webhook');
-
+Route::middleware('stripe.logs')
+    ->any('/webhook/stripe', [WebhookController::class, 'handleWebhook'])
+    ->name('webhook');
 
 Route::middleware('auth')->group(function () {
-
-    Route::get('plans', [
-        PlanController::class, 'index'
-    ]);
-
-    Route::get('plans/{plan}', [
-        PlanController::class, 'show'
-    ])->name("plans.show");
-
-    Route::group(['prefix' => 'subscription'], function () {
-
-        Route::post('/', [
-            PlanController::class, 'subscription'
-        ])->name("subscription.create");
-
-        Route::get('/cancel/{plan}', [
-            PlanController::class, 'cancelSubscription'
-        ])->name("subscription.cancel");
-
-        Route::get('/resume/{plan}', [
-            PlanController::class, 'resumeSubscription'
-        ])->name("subscription.resume");
-    });
-
 
     Route::get('/profile', [
         UserController::class, 'profile'
     ])->name('profile');
 
+    Route::get('plans', [
+        SubscriptionController::class, 'index'
+    ]);
+
+    Route::get('plans/{plan}', [
+        SubscriptionController::class, 'show'
+    ])->name("plans.show");
+
+    Route::group(['prefix' => 'subscription'], function () {
+
+        Route::post('/', [
+            SubscriptionController::class, 'subscription'
+        ])->name("subscription.create");
+
+        Route::get('/cancel/{plan}', [
+            SubscriptionController::class, 'cancel'
+        ])->name("subscription.cancel");
+
+        Route::get('/resume/{plan}', [
+            SubscriptionController::class, 'resume'
+        ])->name("subscription.resume");
+    });
 });
 
 require __DIR__ . '/auth.php';

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Models\WebhookLog as WebhookModel;
+use App\Models\StripeWebhookLog as WebhookModel;
 
 class WebhookLogRepository
 {

@@ -19,15 +19,15 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Basic',
                 'slug' => 'basic',
-                'stripe_plan' => 'price_1LXOzsGzlk2XAanfTskz9n',
-                'price' => 10,
+                'stripe_plan' => 'price_1O4hDkGFQvdPANt6oq7rgll0',
+                'price' => 1,
                 'description' => 'Basic'
             ],
             [
                 'name' => 'Premium',
                 'slug' => 'premium',
-                'stripe_plan' => 'price_1LXP23Gzlk2XAanf4zQZdi',
-                'price' => 100,
+                'stripe_plan' => 'price_1O4iTgGFQvdPANt6CPjOjfFJ',
+                'price' => 10,
                 'description' => 'Premium'
             ]
         ];

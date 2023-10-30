@@ -7,7 +7,13 @@ use App\Models\User;
 
 class AuthenticatedRepository
 {
- public function getUserName($request){
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+ public function getUserName($request): mixed
+ {
      return User::where('id', $request->id)->first();
  }
 }
